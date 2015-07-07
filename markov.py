@@ -16,18 +16,11 @@ def make_chains(corpus):
     ngrams = {}
     for i in range(length_full_text):
         tup = (full_text_string[i], full_text_string[i+1])
-        ngrams[tup] = []
-    #print ngrams
-    for bigram in ngrams:
-        for i in range(length_full_text):
-            if bigram == tuple([full_text_string[i], full_text_string[i+1]]):
-                value = ngrams.get(bigram,[])
-                value.append(full_text_string[i+2])
-                ngrams[bigram] = value
+        ngrams.setdefault(tup,[]).append(full_text_string[i+2])
 
     return ngrams
 
-green_eggs = make_chains("green-eggs.txt")
+#green_eggs = make_chains("green-eggs.txt")
 #print green_eggs
 def make_text(chains):
     """Takes dictionary of markov chains; returns random text."""
@@ -38,7 +31,7 @@ def make_text(chains):
     result.append(next)
     #print " ".join(result)
 
-    while next[-1].isalpha():
+    while next[-1] != ".":
         new = tuple([first_word, next])
         next = random.choice(chains[new])
         result.append(next)
@@ -46,9 +39,9 @@ def make_text(chains):
         next = result[-1]
 
 
-    print " ".join(result)   
+    return " ".join(result)   
 
-make_text(green_eggs)
+#make_text(green_eggs)
 
     # return "Here's some random text."
 
@@ -58,12 +51,15 @@ make_text(green_eggs)
 # Python docs for sys.argv)
 # print str(sys.argv)
 
-# input_text = "Some text"
+functions = sys.argv[0]
+text = sys.argv[1]
+
+input_text = text
 
 # # Get a Markov chain
-# chain_dict = make_chains(input_text)
+chain_dict = make_chains(input_text)
 
 # # Produce random text
-# random_text = make_text(chain_dict)
+random_text = make_text(chain_dict)
 
-# print random_text
+print random_text
