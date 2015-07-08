@@ -18,12 +18,14 @@ def make_chains(corpus):
         tup = (full_text_string[i], full_text_string[i+1])
         ngrams.setdefault(tup,[]).append(full_text_string[i+2])
 
-    return ngrams
+    return ngrams,(full_text_string.pop(-2), full_text_string.pop(-1))
+
 
 #green_eggs = make_chains("green-eggs.txt")
 #print green_eggs
 def make_text(dict1, dict2):
     """Takes dictionary of markov chains; returns random text."""
+    
     dictionaries = [dict1, dict2]
     pick_dict = random.choice(dictionaries)
     start = random.choice(pick_dict.keys())
@@ -65,8 +67,8 @@ text = sys.argv[1]
 text2 = sys.argv[2]
 
 # # Get a Markov chain
-chain_dict = make_chains(text)
-chain_dict2 = make_chains(text2)
+chain_dict = make_chains(text)[0]
+chain_dict2 = make_chains(text2)[0]
 
 # # Produce random text
 random_text = make_text(chain_dict, chain_dict2)
