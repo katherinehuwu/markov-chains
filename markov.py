@@ -28,20 +28,19 @@ def make_chains(corpus, n=2):
 def make_text(chains, n=2):
     """Takes dictionary of markov chains; returns random text."""
     start = random.choice(chains.keys())
+    while start[0][0].isupper() == False:
+        start = random.choice(chains.keys())
     first_word = list(start[-(n-1):]) 
     next = random.choice(chains[start])
     result = list(start)
     result.append(next)
 
 
-    while next[-1].isalpha():
+    while next[-1] != "." and next[-1]!= "?" and next[-1]!= "!"  :
         new = tuple(first_word+[next]) #should be list converted to tuple--make sure it create n tuple
-        print new
         next_word = random.choice(chains[new]) #check to see if changing variable "next" works
-        
-        print "This is next_word: ", next_word
         result.append(next_word)
-        first_word = result[-n:-(n-1)] #check index--work here!
+        first_word = result[-n:-1] #first_word returns n-1 words
         next = result[-1]
 
 
@@ -63,9 +62,9 @@ text = sys.argv[1]
 input_text = text
 
 # # Get a Markov chain
-chain_dict = make_chains(input_text, 3)
+chain_dict = make_chains(input_text)
 
 # # Produce random text
-random_text = make_text(chain_dict, 3)
+random_text = make_text(chain_dict)
 
 print random_text
